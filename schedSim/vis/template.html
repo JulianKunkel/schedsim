@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<!-- see http://visjs.org/timeline_examples.html -->
+<html>
+<head>
+  <title>Simulation results</title>
+  <style type="text/css">
+    body, html {
+      font-family: sans-serif;
+    }
+  </style>
+  <script src="vis.js"></script>
+  <link href="vis.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+<p>
+${EXPERIMENT_NAME}
+</p>
+
+<p>
+<div class="menu">
+    <input type="button" id="zoomIn" value="Zoom in"/>
+    <input type="button" id="zoomOut" value="Zoom out"/>
+    <input type="button" id="moveLeft" value="Move left"/>
+    <input type="button" id="moveRight" value="Move right"/>
+</div>
+</p>
+
+
+
+<div id="visualization"/>
+
+<script type="text/javascript">
+  var container = document.getElementById('visualization');
+
+  var items = new vis.DataSet([
+    ${ITEMS}
+  ]);
+
+  var options = {};
+
+  var timeline = new vis.Timeline(container, items, options);
+
+  function move (percentage) {
+      var range = timeline.getWindow();
+      var interval = range.end - range.start;
+
+      timeline.setWindow({
+          start: range.start.valueOf() - interval * percentage,
+          end:   range.end.valueOf()   - interval * percentage
+      });
+  }
+
+  function zoom (percentage) {
+      var range = timeline.getWindow();
+      var interval = range.end - range.start;
+
+      timeline.setWindow({
+          start: range.start.valueOf() - interval * percentage,
+          end:   range.end.valueOf()   + interval * percentage
+      });
+  }
+
+  document.getElementById('zoomIn').onclick    = function () { zoom(-0.2); };
+  document.getElementById('zoomOut').onclick   = function () { zoom( 0.2); };
+  document.getElementById('moveLeft').onclick  = function () { move( 0.2); };
+  document.getElementById('moveRight').onclick = function () { move(-0.2); };
+</script>
+</body>
+</html>
